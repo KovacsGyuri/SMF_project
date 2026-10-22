@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaStock AI - Tőzsdei Előrejelző és Részvény Növekedési Portál</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M3 3v18h18M18 9l-5 5-4-4-5 5'/></svg>">
+</head>
+<body>
+
+  <!-- Felső Navigációs Sáv -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">▲</div>
+      <div class="brand-name">AlphaStock AI</div>
+      <span class="brand-tag">Előrejelző Motor v2.4</span>
+    </div>
+
+    <div class="nav-actions">
+      <div class="market-pulse">
+        <span class="pulse-dot"></span>
+        <span>Piaci Adatok Aktívak • 2026 Q4 Predikciók</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fő Tartalom Terület -->
+  <div class="container">
+    
+    <!-- Hero Bevezető és Piaci Statisztikák -->
+    <header class="hero-header">
+      <div class="hero-title-group">
+        <h1>Intelligens <span class="gradient-text">Tőzsdei Előrejelző</span> & Növekedési Radar</h1>
+        <p>
+          Fejlett gépi tanulási modellek, Monte Carlo valószínűségi árszimulációk és fundamentális DCF elemzések alapján azonosított részvény növekedési lehetőségek.
+        </p>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <div class="stat-label">Top 5 Átlag Várható Hozam</div>
+          <div class="stat-value up">+41.0%</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="stat-label">Predikciós Időtáv</div>
+          <div class="stat-value">12 Hónap</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="stat-label">Modell Megbízhatóság</div>
+          <div class="stat-value">89.4%</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         1. KIEMELT SZEKCIÓ: 5 LEGNAGYOBB POTENCIÁLLAL RENDELKEZŐ RÉSZVÉNY
+         ============================================================ -->
+    <section>
+      <div class="section-header">
+        <div class="section-title">
+          <span>🚀</span>
+          <h2>A Legnagyobb Növekedési Potenciálú 5 Részvény</h2>
+          <span class="section-badge">Top 5 Kiemelt Pick</span>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          Kattints bármelyik kártyára a részletes interaktív előrejelzés megnyitásához
+        </div>
+      </div>
+
+      <!-- Kártyák ráccsa (JavaScript tölti be dinamikusan) -->
+      <div class="top5-grid" id="top5CardsContainer">
+        <!-- PLTR, NVDA, TSLA, CRWD, LLY kártyák ide renderelődnek -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         2. INTERAKTÍV ELŐREJELZŐ DIAGRAM ÉS KALKULÁTOR
+         ============================================================ -->
+    <section id="forecastSection" class="dashboard-grid">
+      
+      <!-- Bal oldal: Interaktív Árfolyam és Előrejelzési Diagram -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-stock-info">
+            <div class="chart-stock-avatar" id="chartStockSymbol">PLTR</div>
+            <div class="chart-stock-title">
+              <h2 id="chartStockName">Palantir Technologies</h2>
+              <div class="chart-stock-sub">
+                Jelenlegi ár: <strong style="color: var(--text-main);" id="chartStockPrice">$42.80</strong> • 
+                Várható növekedés: <span style="color: var(--accent-green); font-weight: 700;" id="chartStockGrowth">+49.5%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vezérlők (Szcenáriók, Modell, Időtáv) -->
+          <div class="chart-controls">
+            <!-- Forgatókönyv váltó -->
+            <div class="control-pill-group">
+              <button class="pill-btn scenario-pill active" data-scenario="base">Bázis pálya</button>
+              <button class="pill-btn scenario-pill bull" data-scenario="bull">Bika (+45%)</button>
+              <button class="pill-btn scenario-pill bear" data-scenario="bear">Medve (Védelem)</button>
+            </div>
+
+            <!-- Modell típus -->
+            <div class="control-pill-group">
+              <button class="pill-btn model-pill active" data-model="ensemble">AI Ensemble</button>
+              <button class="pill-btn model-pill" data-model="montecarlo">Monte Carlo</button>
+              <button class="pill-btn model-pill" data-model="dcf">DCF Alapú</button>
+            </div>
+
+            <!-- Időtáv -->
+            <div class="control-pill-group">
+              <button class="pill-btn range-pill" data-range="1M">1M</button>
+              <button class="pill-btn range-pill" data-range="3M">3M</button>
+              <button class="pill-btn range-pill" data-range="6M">6M</button>
+              <button class="pill-btn range-pill active" data-range="1Y">1Y</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas diagram -->
+        <div class="chart-container-box">
+          <canvas id="forecastCanvas"></canvas>
+        </div>
+
+        <!-- Jelmagyarázat -->
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #3b82f6;"></div>
+            <span>Múltbeli árfolyam (Tényleges adatok)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #10b981; border: 1px dashed white;"></div>
+            <span>Prediktált jövőbeli árpálya</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: rgba(16, 185, 129, 0.25);"></div>
+            <span>Konfidencia intervallum (85%-os sáv)</span>
+          </div>
+        </div>
+
+        <!-- Főbb Növekedési Katalizátorok összefoglaló -->
+        <div style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.06);">
+          <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
+            <span>⚡</span> Miért várható jelentős növekedés? (Elemzői indoklás):
+          </h4>
+          <ul id="stockCatalystList" style="list-style: none; padding-left: 0.5rem;">
+            <!-- Dinamikus indoklás pontok -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Jobb oldal: Befektetési Kalkulátor és Mélyelemző Mutatók -->
+      <div class="sidebar-panel">
+        
+        <!-- Kalkulátor kártya -->
+        <div class="calc-card">
+          <h3>💰 Befektetési Profit Kalkulátor</h3>
+          <p class="calc-desc">Számold ki a várható hozamot az AI modell előrejelzése alapján.</p>
+
+          <div class="form-group">
+            <label class="form-label">Kiválasztott részvény:</label>
+            <select id="calcStockSelect" class="custom-select">
+              <!-- Dinamikusan feltöltve -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tervezett befektetett összeg:</label>
+            <div class="input-with-currency">
+              <span class="currency-symbol">💵</span>
+              <input type="number" id="calcAmount" class="custom-input" value="500000" step="10000" min="1000">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+            <div>
+              <label class="form-label">Pénznem:</label>
+              <select id="calcCurrency" class="custom-select">
+                <option value="HUF" selected>HUF (Ft)</option>
+                <option value="USD">USD ($)</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Időtáv:</label>
+              <select id="calcPeriod" class="custom-select">
+                <option value="3">3 Hónap</option>
+                <option value="6">6 Hónap</option>
+                <option value="12" selected>12 Hónap (1 Év)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Kalkulátor Eredmény Box -->
+          <div class="calc-result-box">
+            <div style="font-size: 0.75rem; color: var(--text-sub); text-transform: uppercase; font-weight: 700;">Becsült Portfólió Érték:</div>
+            <div class="result-main-val" id="calcResultValue">747 500 Ft</div>
+            <div class="result-profit-text">
+              <span>Várható tiszta profit:</span>
+              <strong style="color: var(--accent-green);" id="calcResultProfit">+247 500 Ft</strong>
+            </div>
+            <div class="result-profit-text" style="margin-top: 0.25rem;">
+              <span>Százalékos várható nyereség:</span>
+              <strong style="color: var(--accent-green);" id="calcResultPercent">+49.5%</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mélyelemző Metrikák Kártya -->
+        <div class="deep-dive-card">
+          <h3>📊 Kulcsfontosságú Mutatók</h3>
+          <div class="metric-grid-2x2">
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">P/E Ráta (Ár/Nyereség)</div>
+              <div class="mini-metric-value" id="deepPe">68.4</div>
+            </div>
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">Béta (Volatilitás)</div>
+              <div class="mini-metric-value" id="deepBeta">1.82</div>
+            </div>
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">RSI Indikátor (14D)</div>
+              <div class="mini-metric-value" id="deepRsi">63.5</div>
+            </div>
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">Piaci Méret</div>
+              <div class="mini-metric-value" id="deepCap">$95.2 Mrd</div>
+            </div>
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">Modell Konfidencia</div>
+              <div class="mini-metric-value" style="color: var(--accent-green);" id="deepConfidence">88%</div>
+            </div>
+            <div class="mini-metric-item">
+              <div class="mini-metric-label">Wall St. Konszenzus</div>
+              <div class="mini-metric-value" style="color: var(--accent-blue);" id="deepBuyRating">78% Vétel</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         3. TELJES RÉSZVÉNY KERESŐ ÉS SZŰRŐ TÁBLÁZAT (Screener)
+         ============================================================ -->
+    <section class="screener-card">
+      <div class="screener-toolbar">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem;">Részvénypiac Növekedési Radar</h2>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Keress és szűrj szektorok, célárak és várható növekedési ráták szerint.</p>
+        </div>
+
+        <!-- Szűrők -->
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="screenerSearch" class="search-input" placeholder="Keresés szimbólum vagy név alapján (pl. NVDA)...">
+          </div>
+
+          <div class="filter-pills">
+            <button class="filter-btn active" data-filter="all">Mind</button>
+            <button class="filter-btn" data-filter="ai">AI Platform</button>
+            <button class="filter-btn" data-filter="semiconductor">Félvezetők</button>
+            <button class="filter-btn" data-filter="software">Szoftver</button>
+            <button class="filter-btn" data-filter="biotech">Biotech</button>
+            <button class="filter-btn" data-filter="ev">E-mobilitás</button>
+            <button class="filter-btn" data-filter="crypto">Web3 & Kripto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Táblázat -->
+      <div class="table-responsive">
+        <table class="stock-table">
+          <thead>
+            <tr>
+              <th>Részvény</th>
+              <th>Jelenlegi Ár</th>
+              <th>12 Havi Célár</th>
+              <th>Várható Növekedés</th>
+              <th>AI Növekedési Pont</th>
+              <th>Kockázat</th>
+              <th>Művelet</th>
+            </tr>
+          </thead>
+          <tbody id="stockTableBody">
+            <!-- Dinamikus táblázat sorok -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Jogi Nyilatkozat és Lábjegyzet -->
+    <footer class="footer">
+      <div class="disclaimer-box">
+        ⚠️ <strong>Jogi Figyelmeztetés:</strong> Az AlphaStock AI felületén megjelenített adatok, árcélok, Monte Carlo szimulációk és gépi tanulási becslések kizárólag információs és edukációs célokat szolgálnak. Nem minősülnek befektetési tanácsadásnak, vételi vagy eladási ajánlatnak. A tőzsdei befektetések kockázattal járnak, és a tőke egy része vagy egésze elveszhet.
+      </div>
+      <div>
+        © 2026 AlphaStock AI Predictor • Készült a legmodernebb pénzügyi analitikai és AI technológiákkal.
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================
+       4. MODÁLIS RÉSZLETEZŐ ABLAK (Deep Dive Modal)
+       ============================================================ -->
+  <div class="modal-overlay" id="deepDiveModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalSymbol" style="font-size: 1.25rem; font-weight: 800;">PLTR - Palantir Technologies</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Részletes Fundamentális & Technikai Elemzés</span>
+        </div>
+        <button class="modal-close" onclick="closeDeepDiveModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+          <div class="mini-metric-item">
+            <div class="mini-metric-label">Jelenlegi Ár</div>
+            <div class="mini-metric-value" id="modalPrice">$42.80</div>
+          </div>
+          <div class="mini-metric-item">
+            <div class="mini-metric-label">12 Havi Célár</div>
+            <div class="mini-metric-value" style="color: var(--accent-cyan);" id="modalTarget">$64.00</div>
+          </div>
+          <div class="mini-metric-item">
+            <div class="mini-metric-label">Várható Növekedés</div>
+            <div class="mini-metric-value" style="color: var(--accent-green);" id="modalGrowth">+49.5%</div>
+          </div>
+          <div class="mini-metric-item">
+            <div class="mini-metric-label">AI Pontszám</div>
+            <div class="mini-metric-value" id="modalAiScore">96/100</div>
+          </div>
+        </div>
+
+        <h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-main);">🚀 Fő Növekedési Katalizátorok:</h4>
+        <ul id="modalCatalysts" style="margin-bottom: 1.25rem; padding-left: 1.25rem; color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
+        </ul>
+
+        <h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--accent-rose);">⚠️ Főbb Piaci Kockázatok:</h4>
+        <ul id="modalRisks" style="margin-bottom: 1.5rem; padding-left: 1.25rem; color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
+        </ul>
+
+        <div style="text-align: right;">
+          <button class="btn-card-select" style="display: inline-flex; width: auto; padding: 0.6rem 1.2rem;" onclick="closeDeepDiveModal()">
+            Ablak bezárása
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
